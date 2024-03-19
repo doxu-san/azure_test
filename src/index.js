@@ -9,7 +9,7 @@ module.exports = async function (context, req) {
     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
     const containerClient = blobServiceClient.getContainerClient(containerName);
 
-    const code = req.body.code;
+    const code = req.rawBody;
     const fileName = `${Date.now()}.c`;
 
     const blockBlobClient = containerClient.getBlockBlobClient(fileName);
