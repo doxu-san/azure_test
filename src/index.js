@@ -4,7 +4,7 @@ module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
     const connectionString = '<Azure Storage Account Connection String>';
-    const containerName = 'c-code';
+    const containerName = 'test';
 
     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
     const containerClient = blobServiceClient.getContainerClient(containerName);
