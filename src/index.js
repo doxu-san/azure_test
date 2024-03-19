@@ -3,7 +3,7 @@ const { BlobServiceClient } = require('@azure/storage-blob');
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    const azureStorageKey = process.env.AZURE_STORAGE_KEY;
+    const connectionString = process.env.AZURE_STORAGE_STR;
     const containerName = 'test';
 
     const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
