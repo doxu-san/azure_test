@@ -17,6 +17,11 @@
    // });
 //};
 
+const fs = require('fs');
+const path = require('path');
+const { exec } = require('child_process');
+const { BlobServiceClient } = require('@azure/storage-blob');
+
 module.exports = async function (context, req) {
     context.log('C code compilation request received.');
 
@@ -41,10 +46,11 @@ module.exports = async function (context, req) {
                 const wasmFilePath = path.join(context.executionContext.functionDirectory, 'temp.wasm');
 
                 // Azure Blob Service に接続
-                const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AzureWebJobsStorage);
-                const containerName = 'compiled-code';
-
-                // Blob コンテナーを作成
+                const connectionString = process.env.AzureWebJobsStorage;
+                const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+                
+                // Blob コンテナーを取得または作成
+                const containerName = 'test'; // ここにコンテナーの名前を入力します
                 const containerClient = blobServiceClient.getContainerClient(containerName);
                 await containerClient.createIfNotExists();
 
@@ -53,7 +59,7 @@ module.exports = async function (context, req) {
                 await uploadBlob(containerClient, 'temp.js', jsFilePath);
                 await uploadBlob(containerClient, 'temp.wasm', wasmFilePath);
 
-                /* HTML 生成処理
+                // HTML 生成処理
                 const html = `
                     <!DOCTYPE html>
                     <html lang="en">
@@ -69,7 +75,7 @@ module.exports = async function (context, req) {
                         <iframe src="temp.html"></iframe>
                     </body>
                     </html>
-                `;*/
+                `;
 
                 context.res = {
                     status: 200,
