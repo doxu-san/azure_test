@@ -3,37 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compile C Code</title>
+    <title>Upload C Code</title>
 </head>
 <body>
-    <h1>Compile C Code</h1>
+    <h2>Enter your C code</h2>
     <textarea id="code" rows="10" cols="50">#include <stdio.h>
 
-        int main() {
-            printf("Hello, World!");
-            return 0;
-        }</textarea><br>
-    <button onclick="compileCode()">Compile</button>
-    
-    <script>
-        async function compileCode() {
-            const code = document.getElementById('code').value;
+int main() {
+    printf("Hello, World!");
+    return 0;
+}</textarea><br>
+    <button onclick="uploadCode()">Upload</button>
+    <button onclick="location.href='https://strcaesarsalad.blob.core.windows.net/test/tmp.html'">確認ページ</button>
 
-            // Azure Functions への POST リクエストを行う
-            const response = await fetch('/api/message', {
-                method: 'POST',
+    <script>
+        async function uploadCode() {
+            const code = document.getElementById('code').value;
+            const containerName = 'test'; // Blob を追加するコンテナ名
+            const storageAccountName = 'strcaesarsalad'; // ストレージ アカウント名
+            const sasToken = '?sp=racwd&st=2024-03-18T19:49:40Z&se=2024-03-21T03:49:40Z&spr=https&sv=2022-11-02&sr=c&sig=4YGqeJq4mR1ueWGjgrKDi1zRkqdvixynU4Gi5URk6es%3D'; // SAS トークンを追記
+
+            const fileName = `${Date.now()}.c`;
+            const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${fileName}${sasToken}`;
+
+            const response = await fetch(blobUrl, {
+                method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'x-ms-blob-type': 'BlockBlob' // Blob の種類を指定するヘッダーを追加
                 },
-                body: JSON.stringify({ code })
+                body: code
             });
 
             if (response.ok) {
-                alert('Compilation successful!');
-                // ページ遷移の処理を追加する
-                window.location.href = 'http://example.com';
+                alert('Code uploaded successfully!');
             } else {
-                alert('Compilation failed.');
+                alert('Failed to upload code.');
             }
         }
     </script>
