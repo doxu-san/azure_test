@@ -33,7 +33,7 @@ module.exports = async function (context, req) {
         fs.writeFileSync(cFilePath, code);
 
         // コンパイル処理（Emscripten を使用）
-        exec(`emcc ${cFilePath} -o temp.html`, async (error, stdout, stderr) => {
+        exec(`setup_emscripten.bat && emcc ${cFilePath} -o temp.html`, async (error, stdout, stderr) => {
             if (error) {
                 context.res = {
                     status: 500,
