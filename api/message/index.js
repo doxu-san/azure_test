@@ -60,7 +60,7 @@ module.exports = async function (context, req) {
                 await uploadBlob(containerClient, 'temp.wasm', wasmFilePath);
 
                 // HTML 生成処理
-                const html = `
+                /*const html = `
                     <!DOCTYPE html>
                     <html lang="en">
                     <head>
@@ -75,11 +75,11 @@ module.exports = async function (context, req) {
                         <iframe src="temp.html"></iframe>
                     </body>
                     </html>
-                `;
+                `;*/
 
                 context.res = {
                     status: 200,
-                    body: html
+                    //body: html
                 };
             }
         });
