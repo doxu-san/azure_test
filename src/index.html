@@ -42,6 +42,13 @@
 		<!--ボタン-->
 		<a href="form_index/c_input.html" class="btn02 rotatefront"><span>Play</span><span>GO NOW!</span></a>
 
+		<script>
+			(async function() {
+				const { text } = await( await fetch(`/api/message`)).json();
+				document.querySelector('#name').textContent = text;
+			}());
+			</script>
+			
 		<article>
 			<h1>Game</h1>
 			<section>
